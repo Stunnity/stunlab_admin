@@ -1,0 +1,7 @@
+.logo-img img {
+  height: 40%;
+  margin-top: 1px;
+}
+.disabled-link {
+  pointer-events: none;
+}

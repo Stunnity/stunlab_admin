@@ -1,0 +1,48 @@
+.delete-btn{
+    background: none;
+    border: none;
+    outline: none;
+    color: #f19999;
+    vertical-align: middle;
+}
+.delete-btn:hover{
+    color: red;
+}
+.icon-update, .icon_delete{
+    vertical-align: middle;
+}
+table {
+    width: 100%;
+  }
+.edit-button{
+    color: #dddddd;
+    vertical-align: middle;
+  }
+.read-button{
+    vertical-align: middle;
+    padding-right: 8px;
+    color: rgb(134, 126, 202);
+}
+.read-button:hover{
+    color: blue;
+
+}
+.edit-button:hover{
+  color: #555454;
+  
+}
+
+.books-404 > .img{
+  margin-left: 18%;
+  margin-top: 4%;
+}
+
+.card-title{
+font-family: "Open Sans", "Helvetica Neue", sans-serif !important;
+}
+
+.card-body>.row{
+  .progress-spinner{
+    margin: 5% 42%;
+  }
+}

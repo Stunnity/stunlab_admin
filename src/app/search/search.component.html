@@ -1,0 +1,94 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <!-- <mat-progress-spinner *ngIf="_books === 1"></mat-progress-spinner> -->
+            <h4 class="card-title" *ngIf="_books == 2">Searching for "{{search}}" books</h4>
+            <h4 class="card-title" *ngIf="_books == 1">{{found_books}} results of "{{search}}"</h4>
+            <h4 class="card-title" *ngIf="_books == 0">Nothing found for "{{search}}" books</h4>
+            <p class="card-category">Search results are from your uploaded books</p>
+
+          </div>
+          <div class="card-body">
+            <div class="row load-books" *ngIf="_books == 2">
+              <div class="progress-spinner col-md-3">
+                <mat-progress-spinner strokeWidth="2" diameter="50" color="accent" class="progressSpinner" [value]="100"
+                  [mode]="'indeterminate'">
+                </mat-progress-spinner>
+              </div>
+            </div>
+            <div class="books-404 row" *ngIf="_books == 0">
+              <div class="img col-md-7">
+                <img src="assets/img/icon-404_2.svg" alt="No search results">
+              </div>
+            </div>
+            <div class="table-responsive" *ngIf="_books == 1">
+              <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+              </div>
+              <mat-form-field class="col-md-3">
+                <input matInput autocomplete="off" placeholder="Filter Books"
+                  (keyup)="applyFilter($event.target.value)">
+              </mat-form-field>
+              <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)">
+                  <!--- Note that these columns can be defined in any order.
+                      The actual rendered columns are set as a property on the row definition" -->
+
+                  <!-- Position Column -->
+                  <ng-container matColumnDef="ISBN">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> ISBN </th>
+                    <td mat-cell *matCellDef="let element"> {{element.ISBN}} </td>
+                  </ng-container>
+
+                  <!-- Name Column -->
+                  <ng-container matColumnDef="bookName">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> bookName </th>
+                    <td mat-cell *matCellDef="let element"> {{element.bookName}} </td>
+                  </ng-container>
+
+                  <!-- Weight Column -->
+                  <ng-container matColumnDef="bookPublisher">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> bookPublisher </th>
+                    <td mat-cell *matCellDef="let element"> {{element.bookPublisher}} </td>
+                  </ng-container>
+
+                  <!-- Symbol Column -->
+                  <ng-container matColumnDef="bookCategory">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> bookCategory </th>
+                    <td mat-cell *matCellDef="let element"> {{element.bookCategory}} </td>
+                  </ng-container>
+
+                  <!-- Symbol Column -->
+                  <ng-container matColumnDef="bookLevel">
+                    <th mat-header-cell mat-sort-header *matHeaderCellDef> bookLevel </th>
+                    <td mat-cell *matCellDef="let element"> {{element.bookLevel}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="Action">
+                    <th mat-header-cell *matHeaderCellDef> Action </th>
+                    <td mat-cell *matCellDef="let element">
+                      <a [routerLink]="[read-books, element.ISBN]" class="read-button">
+                        <i class="material-icons">chrome_reader_mode</i>
+                      </a>
+                      <a [routerLink]="[edit-button, element.ISBN]" class="edit-button"><i
+                          class="material-icons  icon-update ">mode_edit</i></a>
+                      <button class="delete-btn" (click)="deleteBook(element.ISBN)"><i
+                          class="material-icons icon_delete">delete</i></button>
+                    </td>
+
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+                </table>
+              </div>
+              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+            </div>
+
+          </div>
+        </div>

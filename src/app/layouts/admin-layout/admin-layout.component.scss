@@ -1,0 +1,16 @@
+.show::before,
+.show::after {
+  top: 61px;
+  width: 15px;
+  outline: none;
+}
+.show {
+  border: 1px solid white;
+  outline: none;
+}
+.fixed-plugin .fa-cog {
+  padding: 7px;
+}
+.main-panel {
+  top: -2px;
+}

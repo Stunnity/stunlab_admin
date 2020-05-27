@@ -1,0 +1,41 @@
+.closed {
+  font-size: 12px;
+  color: #e8453c;
+  position: absolute;
+  left: 94%;
+  z-index: 4;
+}
+.closed:hover {
+  color: red;
+}
+.app-offline {
+  font-family: "Open Sans", "Helvetica Neue", sans-serif !important;
+}
+.search-book {
+  border: none;
+  font-size: 14px;
+  border-bottom: 1px solid black;
+}
+.search-book:focus {
+  border-bottom: 2px solid #9c27b0;
+}
+.logout {
+  cursor: pointer;
+}
+.alert-area {
+  top: 4px;
+  left: -30px;
+}
+.alert.alert-danger i {
+  color: white;
+}
+
+.alert span {
+  top: 9px;
+  left: -1px;
+
+  position: absolute;
+}
+.close:hover {
+  color: white !important;
+}

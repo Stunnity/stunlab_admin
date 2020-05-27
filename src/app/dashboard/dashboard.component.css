@@ -1,0 +1,14 @@
+.file_upload,
+.mode_edit,
+.delete {
+  font-size: 5.4em;
+  color: white;
+  margin-left: 1em;
+}
+
+.ui-float-label > label {
+  left: 0.65em !important;
+}
+.loading-spinner{
+  height: 35px;
+}

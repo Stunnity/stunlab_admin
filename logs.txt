@@ -1,0 +1,27 @@
+ISSUES
+ 1. Minimise the max admin description length 200 characters in too much atleast 40 characters
+ 2. Book searching,: look at this object
+    {
+        ISBN: "782-7823-872122"
+        name: "Welding"
+        ...
+        file: Array(8)
+        0: {id: 35, book_ISBN: "12-238-2334-3", file: "0", path: "book_12-238-2334-3.pdf", pages: 3, …}
+        1: {id: 36, book_ISBN: "8923823212", file: "0", path: "book_8923823212.pdf", pages: 1, …}
+        2: {id: 37, book_ISBN: "714321132-0", file: "0", path: "book_714321132-0.pdf", pages: 1, …}
+        3: {id: 38, book_ISBN: "7123-23841-2", file: "0", path: "book_7123-23841-2.pdf", pages: 10, …}
+        4: {id: 39, book_ISBN: "00-23-22-24-31", file: "0", path: "book_00-23-22-24-31.pdf", pages: 3, …}
+        5: {id: 40, book_ISBN: "8928241231", file: "0", path: "book_8928241231.pdf", pages: 1, …}
+        6: {id: 41, book_ISBN: "7871842389711", file: "0", path: "book_7871842389711.pdf", pages: 1, …}
+        7: {id: 42, book_ISBN: "782-7823-872122", file: "0", path: "book_782-7823-872122.pdf", pages: 1, …}
+        length: 8
+        __proto__: Array(0)
+        cover: (11) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+    }
+    IZO FILE ZOSE NIZO COVER BIRI KUVA HEE
+
+3.  Get books per provider ntabwo iri kuzana books zumu provider instead iri kuzana zose.
+    Example i consumed API api/book?provider=WDA and get a total of 12 books yet WDA has 2 books
+     as per admin statistics
+
+4. Ntabwo wari wahindura date format umpa, ibyiza wampa default laravel timestamps nge nkakoresha JS as you suggested

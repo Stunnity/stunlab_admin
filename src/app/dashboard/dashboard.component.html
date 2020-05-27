@@ -1,0 +1,167 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-warning card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">library_books</i>
+            </div>
+            <p class="card-category">Uploads</p>
+            <h3 class="card-title"> <img alt="Loading" *ngIf="loadStats" class="loading-spinner" title="Loading"
+                src="assets/img/spinner.gif"> </h3>
+            <h3 class="card-title" *ngIf="!loadStats">{{ statistics.books }} </h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">cloud_upload</i>
+              Uploaded Books
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">file_download</i>
+            </div>
+            <p class="card-category">Downloads</p>
+            <h3 class="card-title"> <img alt="Loading" *ngIf="loadStats" class="loading-spinner" title="Loading"
+                src="assets/img/spinner.gif"> </h3>
+            <h3 class="card-title" *ngIf="!loadStats">{{ statistics.downloads }}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">date_range</i> Total Downloads
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-danger card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">info_outline</i>
+            </div>
+            <p class="card-category">Dislikes</p>
+            <h3 class="card-title"> <img alt="Loading" *ngIf="loadStats" class="loading-spinner" title="Loading"
+                src="assets/img/spinner.gif"> </h3>
+            <h3 class="card-title" *ngIf="!loadStats">{{ statistics.dislikes }}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">local_offer</i> Total Dislikes By Users
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">verified_user</i>
+            </div>
+            <p class="card-category">Verified Users</p>
+            <h3 class="card-title"> <img alt="Loading" *ngIf="loadStats" class="loading-spinner" title="Loading"
+                src="assets/img/spinner.gif"> </h3>
+            <h3 class="card-title" *ngIf="!loadStats">{{ statistics.users }}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">perm_identity</i> Just Updated
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card card-chart">
+          <div class="card-header card-header-success">
+            <a [routerLink]="[menuItems[4].path]">
+              <i class="material-icons file_upload">open_in_new</i></a>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">Push Book</h4>
+
+            <p class="card-category">
+              <span class="text-success"><i class="fa fa-long-arrow-up"></i>
+              </span>
+              Upload book to the app
+            </p>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">access_time</i> Let your Users have
+              access to books
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-chart">
+          <div class="card-header card-header-warning">
+            <a [routerLink]="[menuItems[1].path]">
+              <i class="material-icons mode_edit">mode_edit</i>
+            </a>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">Edit Book</h4>
+            <p class="card-category">Edit yours books</p>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">access_time</i> Change Book Credentials
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-chart">
+          <div class="card-header card-header-danger">
+            <a [routerLink]="[menuItems[1].path]">
+              <i class="material-icons delete">delete</i>
+            </a>
+          </div>
+          <div class="card-body">
+            <h4 class="card-title">Delete Book</h4>
+            <p class="card-category">Remove Book from uploads</p>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">access_time</i> Delete any book of your
+              Choice
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+        <div class="card">
+          <div class="card-header card-header-warning">
+            <h4 class="card-title">Users Stats</h4>
+            <p class="card-category">Most Downloads</p>
+          </div>
+          <div class="card-body table-responsive">
+            <table class="table table-hover">
+              <thead class="text-warning">
+                <th>#</th>
+                <th>Name</th>
+                <th>Downloads</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let userDetails of userDownloads; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ userDetails.user_username }}</td>
+                  <td>{{ userDetails.downloads }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
