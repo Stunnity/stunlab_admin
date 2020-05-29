@@ -1,19 +1,21 @@
 import { Component, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { DataService } from "../services/data.service";
+import { DataService } from "../services/app-data/data.service";
 import { HttpHeaders } from "@angular/common/http";
 import { PDFDocumentProxy } from "ng2-pdf-viewer";
 import { Router } from "@angular/router";
 import { SharedDataService } from "app/services/shared-data/shared-data.service";
-import { start, counter } from "../utils/timer";
+import { openSnackBar } from "../utils/common-methods"
 
 @Component({
   selector: "app-push-book",
   templateUrl: "./push-book.component.html",
   styleUrls: ["./push-book.component.scss"],
 })
+
 export class PushBookComponent implements OnInit {
+
   pdfSrc: string = "";
   formData = new FormData();
   isLoading = false;
@@ -58,21 +60,16 @@ export class PushBookComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    setTimeout(() => {
-      const categoryLevelLoaded = this.sharedDataService.isCategoryLevelSet();
-      if (categoryLevelLoaded) {
-        const { categories, levels } = this.sharedDataService.getCategoriesLevels();
-        this.categories = categories;
-        this.levels = levels
-      }
-      else this.getAllCategories();
-
-    }, 10000)
-    setTimeout(() => {
-      this.currentProvider = this.sharedDataService.getLoggedUser();
-      console.log(this.currentProvider);
-    }, 13000);
+    const categoryLevelLoaded = this.sharedDataService.isCategoryLevelSet();
+    if (categoryLevelLoaded) {
+      const { categories, levels } = this.sharedDataService.getCategoriesLevels();
+      this.categories = categories;
+      this.levels = levels
+    }
+    else this.getAllCategories();
+    this.sharedDataService.getLoggedUser().subscribe(data => {
+      this.currentProvider = data
+    });
   }
 
   callBackFn(pdf: PDFDocumentProxy) {
@@ -107,32 +104,14 @@ export class PushBookComponent implements OnInit {
   }
 
   pushBook() {
-    const start_at = start();
-
     this.isLoading = true;
     this.btn_text = "Pushing book";
     const book_data: any = this.formGroup.value;
-    book_data.bookProvider = this.currentProvider.provider_providerName;
-    book_data.bookCover = this.getBookCover();
-    book_data.bookPages = this.totalPages;
-    console.log(book_data);
+    book_data["bookProvider"] = this.currentProvider["provider_providerName"];
+    book_data["bookCover"] = this.getBookCover();
+    book_data["bookPages"] = this.totalPages;
     this.dataService.uploadBook(book_data).subscribe(
-      (res) => {
-        setTimeout(() => {
-          this.dataService.pushBookCredents(headers, myFormData).subscribe(
-            (res) => {
-              this.btn_text = "Push Book";
-              this.isLoading = false;
-              this.sharedDataService.setDashboardNavigation(0);
-              this.sharedDataService.setBookNavigation(0);
-              this.router.navigate(["/manage-books"]);
-            },
-            (err) => {
-              this.btn_text = "Push Book";
-              this.isLoading = false;
-            }
-          );
-        }, 2000);
+      (book) => {
         var myFormData = new FormData();
         const headers = new HttpHeaders();
         headers.append("Content-Type", "multipart/form-data");
@@ -140,11 +119,25 @@ export class PushBookComponent implements OnInit {
         myFormData.append("bookISBN", book_data.ISBN);
         myFormData.append("bookPages", book_data.bookPages);
         myFormData.append("bookFile", this.bookFile);
+
+        this.dataService.pushBookCredents(headers, myFormData).subscribe(
+          (res) => {
+            this.btn_text = "Push Book";
+            this.isLoading = false;
+            this.sharedDataService.resetBookData();
+            this.router.navigate(["/manage-books"]);
+          },
+          (err) => {
+            this.btn_text = "Push Book";
+            this.isLoading = false;
+          }
+
+        );
       },
       (err) => {
         this.btn_text = "Push Book";
         this.isLoading = false;
-        this.openSnackBar("Upload Failed", "");
+        openSnackBar(this.snackBar, "Upload Failed", "");
       }
     );
   }
@@ -155,16 +148,9 @@ export class PushBookComponent implements OnInit {
       this.dataService.getLevels().subscribe((res) => {
         this.levels = res;
         this.sharedDataService.setCategoriesLevels(this.categories, this.levels)
-
       });
     });
   }
 
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 3000,
-      verticalPosition: "top",
-      panelClass: ["mat-toolbar", "mat-accent"],
-    });
-  }
+
 }

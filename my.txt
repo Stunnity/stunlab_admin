@@ -1,13 +1,6 @@
 
 2. STATISTICS
-
-
-5. {
-    TRY CATCH
-    SET TIMEOUT
-    angular lifecycle hooks
-}
-
+4. TRY CATCH
 6. MATERIAL ICONS
 7. SIMPLIFY CSS TO SCSS
 

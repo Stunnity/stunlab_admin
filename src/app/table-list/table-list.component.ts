@@ -1,16 +1,17 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
-import { DataService } from "../services/data.service";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { DataService } from "../services/app-data/data.service";
 import { MatTableDataSource, MatPaginator, MatSort, Sort } from "@angular/material";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SharedDataService } from "../services/shared-data/shared-data.service";
-
-
+import * as  _ from "lodash";
+import { openSnackBar, _compare, sortedData, filter } from "../utils/common-methods";
 @Component({
   selector: "app-table-list",
   templateUrl: "./table-list.component.html",
   styleUrls: ["./table-list.component.scss"],
 })
 export class TableListComponent implements OnInit {
+
   ELEMENT_DATA: any = [];
   booksFound: boolean = false;
   menuItems: any[];
@@ -24,85 +25,98 @@ export class TableListComponent implements OnInit {
   pagesArray: any[] = [];
   booksArray: any[] = [];
 
-  constructor(private dataService: DataService, private snackBar: MatSnackBar, private sharedDataService: SharedDataService) {
-
-  }
+  constructor(private dataService: DataService, private snackBar: MatSnackBar, private sharedDataService: SharedDataService) { }
   ngOnInit() {
     this._books = 2;
-    setTimeout(() => {
-      const booksNavigation: number = this.sharedDataService.getBookNavigation();
-      console.log(booksNavigation)
+    this.sharedDataService.getBookNavigation().subscribe(value => {
+      const booksNavigation = value;
       if (booksNavigation === 0)
-        this.getBooks(this.page)
+        this.getBooks(this.page);
       else {
-        this.ELEMENT_DATA = this.sharedDataService.getBooks();
-        this.dataSource.data = this.ELEMENT_DATA;
-        console.log("me")
-        this._books = 1;
+        this._books = 2;
+        this.sharedDataService.getBooks().subscribe(res => {
+          this.sharedDataService.getBookPagination().subscribe(res => {
+            if (_.isEmpty(res))
+              return;
+            this.ELEMENT_DATA = res;
+            this.ELEMENT_DATA = this.ELEMENT_DATA.filter(obj => {
+              return obj.page === (this.page - 1);
+            })
+            if (this.ELEMENT_DATA[0] === undefined)
+              return;
+            this.page = this.ELEMENT_DATA[0]["page"];
+            this.length = this.ELEMENT_DATA[0]["total"];
+            this.dataSource.data = this.ELEMENT_DATA[0]["books"];
+            this._books = 1;
+          })
+        });
       }
-    }, 10000)
+    });
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator
   }
 
   getBooks(page) {
-    if (this.pagesArray.indexOf(page) === -1) {
-      console.log("first if")
-      this.pagesArray.push(page);
-      setTimeout(() => {
-        const { provider_providerName } = this.sharedDataService.getLoggedUser() as any;
-        this.dataService.getAllBooks(provider_providerName, page).subscribe((res: any) => {
+    this._books = 2;
+    this.sharedDataService.getPageArray().subscribe(res => {
+      if (this.pagesArray.indexOf(page) === -1) {
+        this.pagesArray.push(page);
+        this.sharedDataService.setPageArray(this.pagesArray);
+        this.sharedDataService.getLoggedUser().subscribe(res => {
+          if (_.isEmpty(res))
+            return;
+          const user = res;
+          this.dataService.getAllBooks(user["provider_providerName"], page).subscribe((res: any) => {
+            this._books = 1;
+            this.length = res.total;
+            this.sharedDataService.setBooks(res.data);
+            this.page_number = (res.current_page - 1);
+            let array = [];
+            for (const book of res.data) {
+              array.push(book.book)
+            }
+            this.dataSource.data = array;
+            this.dataSource.sort = this.sort;
+            let cache_book = {
+              page: this.page_number,
+              books: array,
+              total: this.length
+            }
+            this.booksArray.push(cache_book);
+            this.sharedDataService.setBookPagination(this.booksArray);
+          });
+        })
+      } else {
+        this.sharedDataService.getBookPagination().subscribe(res => {
+          if (_.isEmpty(res))
+            return
+          let paginated: any = {}
+          paginated = res;
+          paginated = paginated.filter(obj => {
+            return obj.page === (page - 1)
+          })
+          if (paginated[0] === undefined)
+            return;
+          this.dataSource.data = paginated[0].books;
           this._books = 1;
-          this.length = res.total;
-          this.sharedDataService.setBooks(res.data);
-          this.page_number = (res.current_page - 1);
-          let array = [];
-          for (const book of res.data) {
-            array.push(book.book)
-          }
-          this.dataSource.data = array;
-          this.dataSource.sort = this.sort;
-          let cachhe_book = {
-            page: this.page_number,
-            books: array
-          }
-          this.booksArray.push(cachhe_book);
-        });
-      }, 15000)
-    } else {
-      var result = this.booksArray.filter(obj => {
-        return obj.page === (page - 1)
-      })
-      const resulted_books = result[0].books;
-      this.dataSource.data = resulted_books;
-      this._books = 1;
-    }
+        })
+
+      }
+    })
   }
+
+
   sortData(sort: Sort) {
-    // Sort sorts the current list, but it wasnt updating it unless i reassigned.
-    this.dataSource.data = this.dataSource.data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      return this._compare(a[sort.active], b[sort.active], isAsc);
-    });
-  }
-  private _compare(a: number | string, b: number | string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+    sortedData(this.dataSource, sort)
   }
   deleteBook(id) {
     this.openDeleteSnackBar("Are you sure to delete the book ", "Confirm", id);
   }
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 2000,
-      verticalPosition: "top",
-      panelClass: ["mat-toolbar", "mat-primary"],
-    });
-  }
+
   setPage(event) {
     this.page = event.pageIndex + 1;
     this._books = 2;
     this.getBooks(this.page);
-
   }
   openDeleteSnackBar(message: string, action: string, id: any) {
     this.snackBar
@@ -114,18 +128,14 @@ export class TableListComponent implements OnInit {
       .subscribe(() => {
         this.dataService.deleteBook(id).subscribe((res) => {
           this.getBooks(this.page);
-          this.openSnackBar("Book Deleted Successfully", "");
+          openSnackBar(this.snackBar, "Book Deleted Successfully", "");
         });
       });
   }
-  logData(row) {
-    console.log(row);
-  }
-  applyFilter(filterString: string) {
-    this.dataSource.filter = filterString.trim().toLowerCase();
-    console.log(this.dataSource)
-    console.log(this.dataSource.filter)
 
+
+  applyFilter(filterString: string) {
+    filter(this.dataSource, filterString);
   }
   displayedColumns: string[] = [
     "ISBN",

@@ -8,18 +8,29 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: "root",
 })
 export class SharedDataService {
-  constructor(private _router: Router, private cookieService: CookieService) { }
+  constructor(private _router: Router, private cookieService: CookieService) {
+  }
 
   private User = new BehaviorSubject({});
   private statistics = new BehaviorSubject({});
   private dashboardNavigation = new BehaviorSubject(0);
   private dashboardCounter: number = 0;
-  public bookNavigation: number = 0;
-  private Books: any[];
+
+  public bookNavigation = new BehaviorSubject(0);
+  private bookNavigationCounter: number = 0;
+  private bookPagination = new BehaviorSubject({});
+  private pagesArray = new BehaviorSubject({})
+  private Books = new BehaviorSubject({});
   private categories: any[];
   private levels: any[];
   private is_category_level_set: boolean = false;
-
+  resetBookData() {
+    this.bookNavigation.next(0);
+    this.bookNavigationCounter = 0;
+    this.bookPagination.next({});
+    this.pagesArray.next({})
+    this.Books.next({})
+  }
   loggedIn() {
     const token = this.cookieService.get(`token`);
     if (!!token) {
@@ -33,8 +44,10 @@ export class SharedDataService {
     else
       return false;
   }
+
   logoutUser() {
     this.cookieService.delete(`token`);
+    this.resetBookData();
     this._router.navigate(["/login"]);
   }
   getToken() {
@@ -51,12 +64,23 @@ export class SharedDataService {
   getDashboardNavigation() {
     return this.dashboardNavigation.asObservable();
   }
-  setBookNavigation(navigation) {
-    console.log(navigation)
-    this.bookNavigation = navigation;
+  setBookNavigation(value: number) {
+    this.bookNavigation.next(value);
   }
   getBookNavigation() {
-    return this.bookNavigation;
+    return this.bookNavigation.asObservable();
+  }
+  setBookPagination(data) {
+    this.bookPagination.next(data);
+  }
+  setPageArray(array) {
+    this.pagesArray.next(array)
+  }
+  getPageArray() {
+    return this.pagesArray.asObservable()
+  }
+  getBookPagination() {
+    return this.bookPagination.asObservable();
   }
   getStatistics() {
     return this.statistics.asObservable();
@@ -67,9 +91,11 @@ export class SharedDataService {
   getBooks() {
     return this.Books;
   }
+
   setBooks(books: any[]) {
-    this.Books = books;
-    this.bookNavigation++;
+    this.bookNavigationCounter++;
+    this.setBookNavigation(this.bookNavigationCounter);
+    this.Books.next(books);
   }
   getLoggedUser() {
     return this.User.asObservable();

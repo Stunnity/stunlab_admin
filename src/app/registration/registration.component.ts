@@ -1,11 +1,8 @@
-import { UserModel as User } from "../registration/user.model";
 import { Component, OnInit } from "@angular/core";
-import { DataService } from "app/services/data.service";
-
+import { DataService } from "app/services/app-data/data.service";
 import { FormControl, Validators, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
-
-import { scorePassword, setPassword } from "./validators";
+import { scorePassword, setPassword } from "../utils/validators";
 import { HttpErrorResponse } from "@angular/common/http";
 @Component({
   selector: "app-registration",
@@ -43,8 +40,6 @@ export class RegistrationComponent implements OnInit {
       ]),
     });
   }
-
-  user: User = new User();
 
   isLoading: boolean;
   btn_text: string;

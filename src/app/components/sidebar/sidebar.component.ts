@@ -1,29 +1,22 @@
-import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { DataService } from "app/services/data.service";
+import { Component, OnInit } from "@angular/core";
+import { DataService } from "app/services/app-data/data.service";
 import { Router } from "@angular/router";
 import { SharedDataService } from "app/services/shared-data/shared-data.service";
+
 declare const $: any;
+
 declare interface RouteInfo {
   path: string;
   title: string;
   icon: string;
   class: string;
 }
+
 export const ROUTES: RouteInfo[] = [
   { path: "/dashboard", title: "Dashboard", icon: "dashboard", class: "" },
   { path: "/push-book", title: "Push Book", icon: "present_to_all", class: "" },
-  {
-    path: "/edit-book",
-    title: "Edit Book",
-    icon: "mode_edit",
-    class: "disabled-link",
-  },
-  {
-    path: "/manage-books",
-    title: "Manage Books",
-    icon: "chrome_reader_mode",
-    class: "",
-  },
+  { path: "/edit-book", title: "Edit Book", icon: "mode_edit", class: "disabled-link" },
+  { path: "/manage-books", title: "Manage Books", icon: "chrome_reader_mode", class: "" },
   { path: "/statistics", title: "Statistics", icon: "assessment", class: "" },
   { path: "/profile", title: "Profile", icon: "person", class: "" },
 ];
@@ -33,10 +26,11 @@ export const ROUTES: RouteInfo[] = [
   templateUrl: "./sidebar.component.html",
   styleUrls: ["./sidebar.component.css"],
 })
-export class SidebarComponent implements OnInit, AfterViewInit {
+
+export class SidebarComponent implements OnInit {
   menuItems: any[];
   notifications: any;
-  displayNotifications: boolean = false;
+  displayNotifications: boolean;
   count: any;
   data = "Seen";
   location: Location;
@@ -50,16 +44,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    this.displayNotifications = false;
     this.menuItems = ROUTES.filter((menuItem) => menuItem);
-    this.getNotifications();
-  }
-  ngAfterViewInit() {
     this.getCurrentUser();
 
   }
+
   getCurrentUser() {
-    this.sharedData.getLoggedUser().subscribe(data => {
-      this.active_user = data["provider_providerName"];
+    this.sharedData.getLoggedUser().subscribe(user => {
+      this.active_user = user["provider_providerName"];
     });
   }
   isMobileMenu() {
@@ -69,16 +62,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     return true;
   }
   getNotifications() {
-    this.dataService.getUnSeenNotification().subscribe((res) => {
-      this.notifications = res;
+    this.dataService.getUnSeenNotification().subscribe((notifications) => {
+      this.notifications = notifications;
       this.count = this.notifications.length;
       if (this.count > 0) this.displayNotifications = true;
     });
   }
 
   seenNotifications(id) {
-    this.dataService.postNotification(id, this.data).subscribe((res) => {
-      console.log(res);
+    this.dataService.postNotification(id, this.data).subscribe((notifications) => {
+      console.log(notifications);
       this.getNotifications();
     });
   }

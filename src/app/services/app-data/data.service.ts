@@ -1,17 +1,14 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
-import { HttpHeaders } from "@angular/common/http";
-import { Book } from "app/push-book/book.model";
-import { environment } from "./../../environments/environment";
-import { Observable } from "rxjs/Observable";
+import { environment } from "../../../environments/environment";
 import "rxjs/add/operator/map";
 
 @Injectable({
   providedIn: "root",
 })
 export class DataService {
-  constructor(private httpClient: HttpClient, private _router: Router) { }
+  constructor(private httpClient: HttpClient) { }
   //Book SCRUD
   //Get all Books
   private BASE_URL: string = environment.BASE_API;
@@ -65,7 +62,7 @@ export class DataService {
   //Total Statistics
   //Number of uploaded books by Current Provider
   getProviderStats(admin: string) {
-    console.log(admin)
+
     return this.httpClient.get(
       `${this.BASE_URL}/api/admin/statistics/${admin}`
     );

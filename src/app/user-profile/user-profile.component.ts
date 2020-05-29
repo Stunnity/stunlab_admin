@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { DataService } from "../services/data.service";
+import { DataService } from "../services/app-data/data.service";
 import { SharedDataService } from "../services/shared-data/shared-data.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { empty } from "../utils/common-methods"
 @Component({
   selector: "app-user-profile",
   templateUrl: "./user-profile.component.html",
@@ -46,17 +47,20 @@ export class UserProfileComponent implements OnInit {
     this.getUser();
   }
   getUser() {
-    setTimeout(() => {
-      const user: any = this.sharedData.getLoggedUser();
-      this.formGroup.controls.email.setValue(user.email);
-      this.formGroup.controls.phone.setValue(user.phone);
-      this.formGroup.controls.description.setValue(user.description);
-      this.formGroup.controls.username.setValue(user.username);
+    this.sharedData.getLoggedUser().subscribe(data => {
+      if (empty(data))
+        return;
+      const user = data;
+      console.log(user)
+      this.formGroup.controls.email.setValue(user["email"]);
+      this.formGroup.controls.phone.setValue(user["phone"]);
+      this.formGroup.controls.description.setValue(user["description"]);
+      this.formGroup.controls.username.setValue(user["username"]);
       this.formGroup.controls.provider_providerName.setValue(
-        user.provider_providerName
-      )
-    }, 13000)
-      ;
+        user["provider_providerName"]
+      );
+    });
+
   }
   getEmailErrorMessage() {
     return this.formGroup.get("email").hasError("email")

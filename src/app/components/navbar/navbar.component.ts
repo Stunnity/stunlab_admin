@@ -3,13 +3,13 @@ import { ROUTES } from "../sidebar/sidebar.component";
 import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { map } from "rxjs/operators";
-import { DataService } from "app/services/data.service";
+import { DataService } from "app/services/app-data/data.service";
 import { fromEvent, Observable, merge, Observer } from "rxjs";
 import { SharedDataService } from "../../services/shared-data/shared-data.service";
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
-  styleUrls: ["./navbar.component.css"],
+  styleUrls: ["./navbar.component.scss"],
 })
 export class NavbarComponent implements OnInit {
   private listTitles: any[];
@@ -133,10 +133,10 @@ export class NavbarComponent implements OnInit {
   }
 
   seenNotifications(id) {
-    // this.dataService.postNotification(id, this.data).subscribe((res) => {
-    //   console.log(res);
-    //   this.getNotifications();
-    // });
+    this.dataService.postNotification(id, this.data).subscribe((res) => {
+      console.log(res);
+      this.getNotifications();
+    });
   }
 
   getTitle() {

@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute, Router, Event, NavigationEnd } from "@angular/router";
-import { DataService } from "../services/data.service";
+import { ActivatedRoute, Router, Event, NavigationEnd, NavigationStart } from "@angular/router";
+import { DataService } from "../services/app-data/data.service";
 import { MatTableDataSource, MatPaginator, MatSort, Sort } from "@angular/material";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { SharedDataService } from "app/services/shared-data/shared-data.service";
+import * as _ from "lodash"
+import { openSnackBar, sortedData, filter } from "../utils/common-methods"
 
 @Component({
   selector: "app-search",
@@ -11,6 +13,7 @@ import { SharedDataService } from "app/services/shared-data/shared-data.service"
   styleUrls: ["./search.component.scss"],
 })
 export class SearchComponent implements OnInit {
+
   anyResults: boolean;
   search: any;
   found_books: number;
@@ -23,6 +26,7 @@ export class SearchComponent implements OnInit {
   books: any;
   action: any = false;
   response: any;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private dataService: DataService,
@@ -35,6 +39,7 @@ export class SearchComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         this.search = this.activatedRoute.snapshot.paramMap.get("search");
         this.searchBooks(this.search);
+        this._books = 2;
       }
     })
   }
@@ -42,19 +47,10 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this._books = 2;
     this.dataSource.sort = this.sort;
-
   }
 
   deleteBook(id) {
     this.openDeleteSnackBar("Are you sure to delete the book ", "Confirm", id);
-  }
-
-  openSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 2000,
-      verticalPosition: "top",
-      panelClass: ["mat-toolbar", "mat-primary"],
-    });
   }
 
   openDeleteSnackBar(message: string, action: string, id: any) {
@@ -66,54 +62,49 @@ export class SearchComponent implements OnInit {
       .onAction()
       .subscribe(() => {
         this.dataService.deleteBook(id).subscribe((res) => {
-          this.openSnackBar("Book Deleted Successfully", "");
+          openSnackBar(this.snackBar, "Book Deleted Successfully", "");
         });
       });
   }
 
   searchBooks(search) {
-    setTimeout(() => {
-      const user: any = this.sharedData.getLoggedUser();
+    this.sharedData.getLoggedUser().subscribe(user => {
+      if (_.isEmpty(user))
+        return;
       this.dataService
-        .searchBook(search, user.provider_providerName)
-        .subscribe((res: any) => {
-          let array = [];
+        .searchBook(search, user["provider_providerName"])
+        .subscribe((books: any) => {
           this._books = 1;
-          this.ELEMENT_DATA = res;
-          for (const book of res) {
-            array.push(book.book)
+          this.found_books = books.length;
+          if (this.found_books === 0) {
+            this._books = 0;
+            return;
           }
-          console.log(array)
-          this.found_books = this.ELEMENT_DATA.length;
-          this.dataSource.data = array;
-
+          for (const book of books) {
+            this.ELEMENT_DATA.push(book.book)
+          }
+          this.dataSource.data = this.ELEMENT_DATA;
           this._books = 1;
         }, err => {
-          this._books = 0;
+          this._books = -1;
         });
-      // this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
-    }, 3000);
-  }
-  logData(row) {
-    console.log(row);
-  }
-  sortData(sort: Sort) {
-    // Sort sorts the current list, but it wasnt updating it unless i reassigned.
-    this.dataSource.data = this.dataSource.data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      return this._compare(a[sort.active], b[sort.active], isAsc);
     });
   }
-  private _compare(a: number | string, b: number | string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+
+
+  sortData(sort: Sort) {
+    sortedData(this.dataSource, sort);
   }
+
   applyFilter(filterString: string) {
-    this.dataSource.filter = filterString.trim().toLowerCase();
+    filter(this.dataSource, filterString);
   }
+
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
+
   displayedColumns: string[] = [
     "ISBN",
     "bookName",

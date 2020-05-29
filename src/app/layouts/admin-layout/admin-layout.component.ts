@@ -7,10 +7,9 @@ import PerfectScrollbar from "perfect-scrollbar";
 import { Observable, Observer, fromEvent, merge } from "rxjs";
 import { map } from "rxjs/operators";
 import * as $ from "jquery";
-import { SlimLoadingBarService } from "ng2-slim-loading-bar";
 import * as jwt_decode from "jwt-decode";
 import { SharedDataService } from "../../services/shared-data/shared-data.service";
-import { DataService } from "app/services/data.service";
+import { DataService } from "app/services/app-data/data.service";
 @Component({
   selector: "app-admin-layout",
   templateUrl: "./admin-layout.component.html",
@@ -27,25 +26,12 @@ export class AdminLayoutComponent implements OnInit {
   loading = false;
   constructor(
     public location: Location,
-    private lBar: SlimLoadingBarService,
     private _router: Router,
     private sharedData: SharedDataService,
     private dataService: DataService
   ) {
-    this._router.events.subscribe((event: Event) => {
-      this.loadingBarInterceptor(event);
-    });
-  }
 
-  private loadingBarInterceptor(event: Event) {
-    if (event instanceof NavigationStart) {
-      this.lBar.start();
-    }
-    if (event instanceof NavigationEnd) {
-      this.lBar.complete();
-    }
   }
-
   ngOnInit() {
     const user = jwt_decode(this.sharedData.getToken());
     this.dataService.getAdmin(user.sub).subscribe((res) => {

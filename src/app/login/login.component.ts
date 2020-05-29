@@ -1,10 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
-import { DataService } from "app/services/data.service";
+import { DataService } from "app/services/app-data/data.service";
 import { FormGroup, Validators, FormControl } from "@angular/forms";
 import { CookieService } from "ngx-cookie-service";
-import * as jwt_decode from "jwt-decode";
 
 @Component({
   selector: "app-login",

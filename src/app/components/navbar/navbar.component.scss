@@ -1,0 +1,49 @@
+@import "assets/scss/custom/__variables.scss";
+
+nav .container-fluid .collapse {
+      .navbar-form {
+        .search-book{
+          border: none;
+          font-family: $font; 
+          font-size: $font-size + 2;
+          border-bottom: ($font-size / 12) $border-style black;
+          &:focus{
+            border-bottom: ($font-size / 7) $border-style #9c27b0;
+          }
+        }
+      }
+     .alert-area {
+      top: ($font-size - 10);
+      left: (($font-size * 0) - 34);    
+      .app-offline {
+        font-family: $font; 
+        button.close{
+        >  span{
+          top: (($font-size * 0) + 9);
+          left: (($font-size * 0) - 1);
+          position: $absolute;      
+          }
+          &:hover{
+            color: $white !important;
+          }
+        }
+      }
+    }
+      .navbar-nav{
+      li.nav-item
+        >a.logout{
+        cursor: pointer;
+      }
+      li.nav-item.dropdown .dropdown-menu>a.dropdown-item i.material-icons.closed{
+        font-size: $font-size;
+        color: #e8453c;
+        position: $absolute;
+        left: 94%;
+        z-index: 4;          
+        &:hover{
+          color: red;
+        }
+     }   
+    }
+  }  
+

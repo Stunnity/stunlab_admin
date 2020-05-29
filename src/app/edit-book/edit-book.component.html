@@ -77,7 +77,8 @@
               <input type="hidden" name="provider" id="bookProvider" value="" />
               <button mat-raised-button type="submit" class="btn btn-danger pull-right"
                 [disabled]="formGroup.invalid || !formGroup.dirty || isLoading">
-                <img *ngIf="isLoading" style="width: 24px; margin-top: -4px;" src="../../assets/img/spinner.gif" />
+                <img *ngIf="isLoading" style="width: 24px; margin-top: -4px;" alt="loading"
+                  src="../../assets/img/spinner.gif" />
                 {{ btn_text }}
               </button>
               <div class="clearfix"></div>

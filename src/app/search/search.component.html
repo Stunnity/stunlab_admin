@@ -5,11 +5,16 @@
         <div class="card">
           <div class="card-header card-header-danger">
             <!-- <mat-progress-spinner *ngIf="_books === 1"></mat-progress-spinner> -->
+            <h4 class="card-title" *ngIf="_books == -1">You are offline. "{{search}}" books can't be reached! 😓️😓️
+            </h4>
             <h4 class="card-title" *ngIf="_books == 2">Searching for "{{search}}" books</h4>
             <h4 class="card-title" *ngIf="_books == 1">{{found_books}} results of "{{search}}"</h4>
             <h4 class="card-title" *ngIf="_books == 0">Nothing found for "{{search}}" books</h4>
-            <p class="card-category">Search results are from your uploaded books</p>
-
+            <p class="card-category" *ngIf="_books == -1; else showResults;">We cannot access our servers. Retrying
+              connecting.</p>
+            <ng-template #showResults>
+              <p class="card-category">Search results are from your uploaded books</p>
+            </ng-template>
           </div>
           <div class="card-body">
             <div class="row load-books" *ngIf="_books == 2">
@@ -86,7 +91,7 @@
 
                 </table>
               </div>
-              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+              <mat-paginator showFirstLastButtons></mat-paginator>
 
             </div>
 
