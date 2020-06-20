@@ -71,7 +71,6 @@ export class SidebarComponent implements OnInit {
 
   seenNotifications(id) {
     this.dataService.postNotification(id, this.data).subscribe((notifications) => {
-      console.log(notifications);
       this.getNotifications();
     });
   }

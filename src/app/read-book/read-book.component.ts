@@ -14,6 +14,8 @@ export class ReadBookComponent implements OnInit {
   validParam: boolean;
   fileNotFound: boolean;
   constructor(private route: ActivatedRoute, private dataService: DataService) {
+  }
+  ngOnInit() {
     this.bookReady = false;
     this.route.queryParams.subscribe((params) => {
       if (!params.ISBN) {
@@ -28,12 +30,10 @@ export class ReadBookComponent implements OnInit {
 
 
   }
-  ngOnInit() {
-  }
 
   getBook(ISBN: string) {
     this.dataService.getOneBook(ISBN).subscribe((res: any) => {
-      console.log(res);
+
       this.bookReady = true;
       window.open(res.bookFile, '_self');
       this.fileNotFound = false;

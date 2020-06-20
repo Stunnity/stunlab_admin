@@ -13,11 +13,16 @@
 }
 
 .login-link {
-  vertical-align: sub;
-  line-height: 52px;
+  line-height: 50px;
   font-size: 13px;
   color: #9c27b0;
 }
 .login-link:hover {
   text-decoration: underline;
+}
+
+
+.alert-danger{
+  padding: 12px 17px;
+    font-size: 14px;
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from 'app/services/app-data/data.service';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { scorePassword, setPassword } from '../utils/validators';
+import { scorePassword, setPassword, checkPasswords } from '../utils/validators';
 import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-registration',
@@ -43,10 +43,18 @@ export class RegistrationComponent implements OnInit {
         Validators.minLength(200),
       ]),
     });
+    this.formGroup.setValidators(checkPasswords);
   }
 
   ngOnInit() {
     this.btn_text = 'create account';
+    setInterval(() => {
+      console.log(this.formGroup)
+      console.log(this.formGroup.controls.c_password)
+      console.log(this.formGroup.hasError('unmatch'))
+      console.log(this.formGroup.get('c_password').dirty)
+    }, 10000)
+
   }
   signUp() {
     this.isLoading = true;
@@ -60,7 +68,7 @@ export class RegistrationComponent implements OnInit {
         this.btn_text = 'Create Account';
         this.registerErrorOccurred = true;
         this.errorMessage = (error.status === 0) ? 'You aren"t connected to the Internet! 😓️😓' :
-          'Invalid Username and Password';
+          'Registration Failed !';
       }
     );
   }

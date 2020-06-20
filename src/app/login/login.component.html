@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-7 form-enclosed">
-        <div *ngIf="loginErrorOccurred" class="alert alert-rose alert-dismissible fade show" role="alert">
+        <div *ngIf="loginErrorOccurred" class="alert alert-danger alert-dismissible fade show" role="alert">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -42,7 +42,7 @@
               </div>
 
               <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-8">
                   <button mat-raised-button type="submit" id="signup-button" class="btn btn-danger pull-right"
                     [disabled]="isLoading || formGroup.invalid">
                     <img *ngIf="isLoading" alt="Loading" style="width: 24px; margin-top: -4px;"
@@ -51,7 +51,7 @@
                   </button>
                   <div class="clearfix"></div>
                 </div>
-                <div class="com-md-3">
+                <div class="col-md-4">
                   <a [routerLink]="['/', 'signup']" class="login-link">Dont have an account ?</a>
                 </div>
               </div>

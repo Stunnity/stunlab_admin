@@ -1,7 +1,0 @@
-{
-  "https://drive.google.com/uc?id": {
-    "target": "https://drive.google.com",
-    "secure": false,
-    "logLevel": "debug"
-  }
-}

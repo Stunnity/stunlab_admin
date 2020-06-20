@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-7 form-enclosed">
-        <div *ngIf="registerErrorOccurred" class="alert alert-rose alert-dismissible fade show" role="alert">
+        <div *ngIf="registerErrorOccurred" class="alert alert-danger alert-dismissible fade show" role="alert">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -68,7 +68,7 @@
                   <mat-form-field class="example-full-width">
                     <input matInput placeholder="Confirm Password" type="password" autocomplete="off"
                       formControlName="c_password" maxlength="24" required />
-                    <mat-error *ngIf="formGroup.get('c_password').invalid">Passwords Dont Match
+                    <mat-error *ngIf="formGroup.get('c_password').invalid">Required
                     </mat-error>
                   </mat-form-field>
                 </div>
@@ -87,7 +87,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-8">
                   <button mat-raised-button type="submit" id="signup-button" class="btn btn-danger pull-right"
                     [disabled]="isLoading || formGroup.invalid">
                     <img *ngIf="isLoading" alt="Loader" style="width: 24px; margin-top: -4px;"
@@ -96,8 +96,8 @@
                   </button>
                   <div class="clearfix"></div>
                 </div>
-                <div class="com-md-3">
-                  <a [routerLink]="['/', 'login']" class="login-link">Already got an Account ?</a>
+                <div class="col-md-4">
+                  <a [routerLink]="['/', 'login']" class="login-link">Got an Account ?</a>
                 </div>
               </div>
             </form>

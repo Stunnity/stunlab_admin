@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location, PopStateEvent } from '@angular/common';
-import 'rxjs/add/operator/filter';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { Observable, Observer, fromEvent, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -37,7 +36,7 @@ export class AdminLayoutComponent implements OnInit {
     this.dataService.getAdmin(user.sub).subscribe((res) => {
       this.sharedData.setLoggedUser(res);
     });
-    this.createOnline$().subscribe((isOnline) => console.log(isOnline));
+
     const isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 
     if (
@@ -75,7 +74,6 @@ export class AdminLayoutComponent implements OnInit {
       }
     });
     this.a_router = this._router.events
-      .filter((event) => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
         elemMainPanel.scrollTop = 0;
         elemSidebar.scrollTop = 0;
@@ -153,14 +151,5 @@ export class AdminLayoutComponent implements OnInit {
     }
     return bool;
   }
-  createOnline$() {
-    return merge<boolean>(
-      fromEvent(window, 'offline').pipe(map(() => false)),
-      fromEvent(window, 'online').pipe(map(() => true)),
-      new Observable((sub: Observer<boolean>) => {
-        sub.next(navigator.onLine);
-        sub.complete();
-      })
-    );
-  }
+
 }

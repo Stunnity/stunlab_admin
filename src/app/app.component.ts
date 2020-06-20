@@ -18,7 +18,5 @@ export class AppComponent implements OnInit {
   ) {
   }
   ngOnInit() {
-    // this.loginStatus = this.sharedDataService.loggedIn();
-    // if (!this.loginStatus) { this._router.navigate(['/login']); }
   }
 }

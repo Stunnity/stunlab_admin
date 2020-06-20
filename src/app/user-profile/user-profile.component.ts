@@ -52,7 +52,6 @@ export class UserProfileComponent implements OnInit {
         return;
       }
       const user = data;
-      console.log(user)
       this.formGroup.controls.email.setValue(user['email']);
       this.formGroup.controls.phone.setValue(user['phone']);
       this.formGroup.controls.description.setValue(user['description']);
@@ -70,7 +69,6 @@ export class UserProfileComponent implements OnInit {
   }
   updateProfile() {
     this.isLoading = true;
-    console.log(this.formGroup.getRawValue());
     this.dataService.updateAdmin(this.formGroup.getRawValue(), this.formGroup.controls.username.value).subscribe(
       (res) => {
         this.btn_text = 'Updating Profile';

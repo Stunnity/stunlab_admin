@@ -135,7 +135,8 @@ export class NavbarComponent implements OnInit {
 
   seenNotifications(id) {
     this.dataService.postNotification(id, this.data).subscribe((res) => {
-      console.log(res);
+
+
       this.getNotifications();
     });
   }

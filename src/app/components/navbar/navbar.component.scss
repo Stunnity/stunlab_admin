@@ -21,7 +21,9 @@ nav .container-fluid .collapse {
       top: ($font-size - 10);
       left: (($font-size * 0) - 34);    
       .app-offline {
-      
+        padding: 12px 19px;
+        font-size: 13px;
+    
         button.close{
         >  span{
           top: (($font-size * 0) + 9);

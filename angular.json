@@ -52,7 +52,7 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
+              "buildOptimizer": false,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -65,8 +65,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "stunlab-admin:build",
-            "proxyConfig": "src/proxy.conf.json"
+            "browserTarget": "stunlab-admin:build"
           },
           "configurations": {
             "production": {

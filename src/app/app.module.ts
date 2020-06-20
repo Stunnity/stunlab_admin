@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { CookieService } from 'ngx-cookie-service';
-import { HttpCancelService } from './services/http/http-cancel.service';
-import { ManageHttpInterceptor } from './services/http/managehttp.interceptor';
+
 import {
   MatButtonModule,
   MatInputModule,
@@ -15,7 +14,6 @@ import {
   MatSelectModule,
 } from '@angular/material';
 
-import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing-module';
 import { ComponentsModule } from './components/components.module';
@@ -26,6 +24,8 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from 'app/page-not-found/page-not-found.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { HttpCancelService } from './services/http/http-cancel.service';
+import { ManageHttpInterceptor } from './services/http/managehttp.interceptor';
 
 
 @NgModule({
@@ -33,7 +33,6 @@ import { RegistrationComponent } from './registration/registration.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
     ComponentsModule,
     RouterModule,
     MatButtonModule,
@@ -63,8 +62,8 @@ import { RegistrationComponent } from './registration/registration.component';
       multi: true,
     },
     CookieService,
-    // HttpCancelService,
-    // { provide: HTTP_INTERCEPTORS, useClass: ManageHttpInterceptor, multi: true }
+    HttpCancelService,
+    { provide: HTTP_INTERCEPTORS, useClass: ManageHttpInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
 })

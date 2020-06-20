@@ -18,6 +18,9 @@ export class StatisticsComponent implements OnInit {
   data3: any;
   statsLoad: boolean;
   constructor(private dataService: DataService, private sharedService: SharedDataService) {
+
+  }
+  ngOnInit() {
     this.sharedService.getChartStatsSet().subscribe(res => {
       if (res === 0) {
         this.dataService.getChartData().subscribe(stats => {
@@ -28,15 +31,12 @@ export class StatisticsComponent implements OnInit {
       }
     })
   }
-  ngOnInit() {
-  }
   fetchStatistics() {
     this.sharedService.getChartStatistics().subscribe(res => {
       if (empty(res)) {
         return;
       }
       // Day_Names
-      console.log(res);
 
       const weeksComparison = res['comparison']['weeks'];
       // tslint:disable-next-line: prefer-const

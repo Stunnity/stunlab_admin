@@ -1,3 +1,5 @@
+import { FormGroup } from "@angular/forms";
+
 export function passwordCompare(password1, password2): boolean {
   return password1 === password2;
 }
@@ -35,4 +37,12 @@ export function scorePassword(password): number {
   score += (variationCount - 1) * 10;
 
   return score;
+}
+
+
+export function checkPasswords(group: FormGroup) {
+  const pass = group.get('password').value;
+  const confirmPass = group.get('c_password').value;
+
+  return pass === confirmPass ? null : { unmatch: true };
 }
