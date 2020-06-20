@@ -1,10 +1,15 @@
-@import "assets/scss/custom/__variables.scss";
+
+$white: #ffffff;
+$absolute: absolute;
+$font-size: 12px;
+$left: 0px;
+$border-style: solid;
 
 nav .container-fluid .collapse {
       .navbar-form {
         .search-book{
           border: none;
-          font-family: $font; 
+          
           font-size: $font-size + 2;
           border-bottom: ($font-size / 12) $border-style black;
           &:focus{
@@ -16,7 +21,7 @@ nav .container-fluid .collapse {
       top: ($font-size - 10);
       left: (($font-size * 0) - 34);    
       .app-offline {
-        font-family: $font; 
+      
         button.close{
         >  span{
           top: (($font-size * 0) + 9);

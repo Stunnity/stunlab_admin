@@ -1,20 +1,23 @@
-import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
-import { RouterModule } from "@angular/router";
-import { CommonModule } from "@angular/common";
-import { AdminLayoutRoutes } from "./admin-layout.routing";
-import { DashboardComponent } from "../../dashboard/dashboard.component";
-import { UserProfileComponent } from "../../user-profile/user-profile.component";
-import { TableListComponent } from "../../table-list/table-list.component";
-import { StatisticsComponent } from "../../statistics/statistics.component";
-import { EditBookComponent } from "../../edit-book/edit-book.component";
-import { PushBookComponent } from "app/push-book/push-book.component";
-import { SearchComponent } from "../../search/search.component";
-import { HttpClientModule } from "@angular/common/http";
-import { FileUploadModule } from "primeng/fileupload";
-import { DropdownModule } from "primeng/dropdown";
-import { ButtonModule } from "primeng/button";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { PdfViewerModule } from "ng2-pdf-viewer";
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { AdminLayoutRoutes } from './admin-layout.routing';
+import { DashboardComponent } from '../../dashboard/dashboard.component';
+import { UserProfileComponent } from '../../user-profile/user-profile.component';
+import { TableListComponent } from '../../table-list/table-list.component';
+import { StatisticsComponent } from '../../statistics/statistics.component';
+import { EditBookComponent } from '../../edit-book/edit-book.component';
+import { PushBookComponent } from 'app/push-book/push-book.component';
+import { SearchComponent } from '../../search/search.component';
+import { ReadBookComponent } from '../../read-book/read-book.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FileUploadModule } from 'primeng/fileupload';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { ChartModule } from 'primeng/chart';
+
 import {
   MatButtonModule,
   MatInputModule,
@@ -28,8 +31,7 @@ import {
   MatSortModule,
   MatProgressSpinnerModule,
   MatPaginatorModule,
-} from "@angular/material";
-import { ChartModule } from "primeng/chart";
+} from '@angular/material';
 
 @NgModule({
   imports: [
@@ -63,6 +65,7 @@ import { ChartModule } from "primeng/chart";
     TableListComponent,
     EditBookComponent,
     PushBookComponent,
+    ReadBookComponent,
     StatisticsComponent,
     SearchComponent,
   ],

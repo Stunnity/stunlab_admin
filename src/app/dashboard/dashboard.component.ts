@@ -1,11 +1,11 @@
-import { Component, OnInit } from "@angular/core";
-import { SharedDataService } from "../services/shared-data/shared-data.service";
-import { DataService } from "app/services/app-data/data.service";
+import { Component, OnInit } from '@angular/core';
+import { SharedDataService } from '../services/shared-data/shared-data.service';
+import { DataService } from 'app/services/app-data/data.service';
 
 @Component({
-  selector: "app-dashboard",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.css"],
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
 
@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   counter = 0;
   statistics: Object = {};
   isConnected = true;
+  userDownloads: any[];
 
   constructor(
     private dataService: DataService,
@@ -27,12 +28,11 @@ export class DashboardComponent implements OnInit {
     this.loadStats = true;
     this.sharedDataService.getDashboardNavigation().subscribe(value => {
       const dashboardNavigation = value;
-      if (dashboardNavigation == 0) {
+      if (dashboardNavigation === 0) {
         this.sharedDataService.getLoggedUser().subscribe(user => {
-          this.getProviderStatistics(user["provider_providerName"]);
+          this.getProviderStatistics(user['provider_providerName']);
         })
-      }
-      else {
+      } else {
         this.sharedDataService.getStatistics().subscribe(statistics => {
           this.statistics = statistics;
         });
@@ -43,8 +43,9 @@ export class DashboardComponent implements OnInit {
 
   getProviderStatistics(provider: string) {
     try {
-      if (provider == undefined)
+      if (provider === undefined) {
         return;
+      }
       this.dataService
         .getProviderStats(provider)
         .subscribe((statistics: any) => {

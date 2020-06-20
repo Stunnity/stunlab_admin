@@ -1,10 +1,10 @@
-import { MaterialDashboardAngularPage } from './app.po';
+import { StunlabAdminPage } from './app.po';
 
-describe('material-dashboard-angular App', () => {
-  let page: MaterialDashboardAngularPage;
+describe('stunlab-admin App', () => {
+  let page: StunlabAdminPage;
 
   beforeEach(() => {
-    page = new MaterialDashboardAngularPage();
+    page = new StunlabAdminPage();
   });
 
   it('should display message saying app works', () => {

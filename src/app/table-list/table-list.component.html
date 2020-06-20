@@ -89,7 +89,7 @@
                         Action
                       </th>
                       <td mat-cell *matCellDef="let element">
-                        <a [routerLink]="['/view/book', element.ISBN ]" class="read-button">
+                        <a (click)="readBook(element.ISBN)" class="read-button">
                           <i class="material-icons icon_read">chrome_reader_mode</i>
                         </a>
                         <a [routerLink]="['/edit-book', element.ISBN ]" class="edit-button"><i

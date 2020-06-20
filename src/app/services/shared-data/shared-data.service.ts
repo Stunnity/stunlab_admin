@@ -1,29 +1,33 @@
-import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
-import { CookieService } from "ngx-cookie-service";
-import * as jwt_decode from "jwt-decode"
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import * as jwt_decode from 'jwt-decode'
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class SharedDataService {
-  constructor(private _router: Router, private cookieService: CookieService) {
-  }
 
   private User = new BehaviorSubject({});
   private statistics = new BehaviorSubject({});
   private dashboardNavigation = new BehaviorSubject(0);
-  private dashboardCounter: number = 0;
+  private dashboardCounter = 0;
 
   public bookNavigation = new BehaviorSubject(0);
-  private bookNavigationCounter: number = 0;
+  private bookNavigationCounter = 0;
   private bookPagination = new BehaviorSubject({});
   private pagesArray = new BehaviorSubject({})
   private Books = new BehaviorSubject({});
   private categories: any[];
   private levels: any[];
-  private is_category_level_set: boolean = false;
+  private is_category_level_set = false;
+
+  private chartStatistics = new BehaviorSubject({});
+  private isChartStatisticSet = new BehaviorSubject(0);
+
+  constructor(private _router: Router, private cookieService: CookieService) {
+  }
   resetBookData() {
     this.bookNavigation.next(0);
     this.bookNavigationCounter = 0;
@@ -40,18 +44,31 @@ export class SharedDataService {
       } catch (error) {
         return false;
       }
-    }
-    else
+    } else {
       return false;
+    }
   }
 
+  setChartStatistics(data) {
+    this.isChartStatisticSet.next(1);
+    this.chartStatistics.next(data);
+  }
+
+  getChartStatistics() {
+    return this.chartStatistics.asObservable();
+  }
+
+  getChartStatsSet() {
+    return this.isChartStatisticSet.asObservable();
+
+  }
   logoutUser() {
     this.cookieService.delete(`token`);
     this.resetBookData();
-    this._router.navigate(["/login"]);
+    this._router.navigate(['/login']);
   }
   getToken() {
-    return this.cookieService.get("token");
+    return this.cookieService.get('token');
   }
   setStatistics(stats: Object) {
     this.dashboardCounter++;

@@ -1,25 +1,25 @@
-import { Component, OnInit } from "@angular/core";
-import { Location, PopStateEvent } from "@angular/common";
-import "rxjs/add/operator/filter";
-import { Event, NavigationEnd, NavigationStart, Router } from "@angular/router";
-import { Subscription } from "rxjs/Subscription";
-import PerfectScrollbar from "perfect-scrollbar";
-import { Observable, Observer, fromEvent, merge } from "rxjs";
-import { map } from "rxjs/operators";
-import * as $ from "jquery";
-import * as jwt_decode from "jwt-decode";
-import { SharedDataService } from "../../services/shared-data/shared-data.service";
-import { DataService } from "app/services/app-data/data.service";
+import { Component, OnInit } from '@angular/core';
+import { Location, PopStateEvent } from '@angular/common';
+import 'rxjs/add/operator/filter';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import PerfectScrollbar from 'perfect-scrollbar';
+import { Observable, Observer, fromEvent, merge } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as $ from 'jquery';
+import * as jwt_decode from 'jwt-decode';
+import { SharedDataService } from '../../services/shared-data/shared-data.service';
+import { DataService } from 'app/services/app-data/data.service';
 @Component({
-  selector: "app-admin-layout",
-  templateUrl: "./admin-layout.component.html",
-  styleUrls: ["./admin-layout.component.scss"],
+  selector: 'app-admin-layout',
+  templateUrl: './admin-layout.component.html',
+  styleUrls: ['./admin-layout.component.scss'],
 })
 export class AdminLayoutComponent implements OnInit {
   private a_router: Subscription;
   private lastPoppedUrl: string;
   private yScrollStack: number[] = [];
-  status = "ONLINE";
+  status = 'ONLINE';
   isConnected = true;
   showLoadingIndicator = true;
 
@@ -38,25 +38,25 @@ export class AdminLayoutComponent implements OnInit {
       this.sharedData.setLoggedUser(res);
     });
     this.createOnline$().subscribe((isOnline) => console.log(isOnline));
-    const isWindows = navigator.platform.indexOf("Win") > -1 ? true : false;
+    const isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 
     if (
       isWindows &&
       !document
-        .getElementsByTagName("body")[0]
-        .classList.contains("sidebar-mini")
+        .getElementsByTagName('body')[0]
+        .classList.contains('sidebar-mini')
     ) {
       document
-        .getElementsByTagName("body")[0]
-        .classList.add("perfect-scrollbar-on");
+        .getElementsByTagName('body')[0]
+        .classList.add('perfect-scrollbar-on');
     } else {
       document
-        .getElementsByTagName("body")[0]
-        .classList.remove("perfect-scrollbar-off");
+        .getElementsByTagName('body')[0]
+        .classList.remove('perfect-scrollbar-off');
     }
-    const elemMainPanel = <HTMLElement>document.querySelector(".main-panel");
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
     const elemSidebar = <HTMLElement>(
-      document.querySelector(".sidebar .sidebar-wrapper")
+      document.querySelector('.sidebar .sidebar-wrapper')
     );
 
     this.location.subscribe((ev: PopStateEvent) => {
@@ -64,13 +64,14 @@ export class AdminLayoutComponent implements OnInit {
     });
     this._router.events.subscribe((event: any) => {
       if (event instanceof NavigationStart) {
-        if (event.url != this.lastPoppedUrl)
+        if (event.url !== this.lastPoppedUrl) {
           this.yScrollStack.push(window.scrollY);
+        }
       } else if (event instanceof NavigationEnd) {
-        if (event.url == this.lastPoppedUrl) {
+        if (event.url === this.lastPoppedUrl) {
           this.lastPoppedUrl = undefined;
           window.scrollTo(0, this.yScrollStack.pop());
-        } else window.scrollTo(0, 0);
+        } else { window.scrollTo(0, 0); }
       }
     });
     this.a_router = this._router.events
@@ -85,19 +86,19 @@ export class AdminLayoutComponent implements OnInit {
     }
 
     const window_width = $(window).width();
-    let $sidebar = $(".sidebar");
-    let $sidebar_responsive = $("body > .navbar-collapse");
-    let $sidebar_img_container = $sidebar.find(".sidebar-background");
+    const $sidebar = $('.sidebar');
+    const $sidebar_responsive = $('body > .navbar-collapse');
+    const $sidebar_img_container = $sidebar.find('.sidebar-background');
 
     if (window_width > 767) {
-      if ($(".fixed-plugin .dropdown").hasClass("show-dropdown")) {
-        $(".fixed-plugin .dropdown").addClass("open");
+      if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
+        $('.fixed-plugin .dropdown').addClass('open');
       }
     }
 
-    $(".fixed-plugin a").click(function (event) {
+    $('.fixed-plugin a').click(function (event) {
       // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
-      if ($(this).hasClass("switch-trigger")) {
+      if ($(this).hasClass('switch-trigger')) {
         if (event.stopPropagation) {
           event.stopPropagation();
         } else if (window.event) {
@@ -106,20 +107,20 @@ export class AdminLayoutComponent implements OnInit {
       }
     });
 
-    $(".fixed-plugin .badge").click(function () {
-      let $full_page_background = $(".full-page-background");
+    $('.fixed-plugin .badge').click(function () {
+      const $full_page_background = $('.full-page-background');
 
-      $(this).siblings().removeClass("active");
-      $(this).addClass("active");
+      $(this).siblings().removeClass('active');
+      $(this).addClass('active');
 
-      var new_color = $(this).data("color");
+      const new_color = $(this).data('color');
 
       if ($sidebar.length !== 0) {
-        $sidebar.attr("data-color", new_color);
+        $sidebar.attr('data-color', new_color);
       }
 
-      if ($sidebar_responsive.length != 0) {
-        $sidebar_responsive.attr("data-color", new_color);
+      if ($sidebar_responsive.length !== 0) {
+        $sidebar_responsive.attr('data-color', new_color);
       }
     });
   }
@@ -127,9 +128,9 @@ export class AdminLayoutComponent implements OnInit {
     this.runOnRouteChange();
   }
   isMaps(path) {
-    var titlee = this.location.prepareExternalUrl(this.location.path());
+    let titlee = this.location.prepareExternalUrl(this.location.path());
     titlee = titlee.slice(1);
-    if (path == titlee) {
+    if (path === titlee) {
       return false;
     } else {
       return true;
@@ -137,7 +138,7 @@ export class AdminLayoutComponent implements OnInit {
   }
   runOnRouteChange(): void {
     if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
-      const elemMainPanel = <HTMLElement>document.querySelector(".main-panel");
+      const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
       const ps = new PerfectScrollbar(elemMainPanel);
       ps.update();
     }
@@ -145,8 +146,8 @@ export class AdminLayoutComponent implements OnInit {
   isMac(): boolean {
     let bool = false;
     if (
-      navigator.platform.toUpperCase().indexOf("MAC") >= 0 ||
-      navigator.platform.toUpperCase().indexOf("IPAD") >= 0
+      navigator.platform.toUpperCase().indexOf('MAC') >= 0 ||
+      navigator.platform.toUpperCase().indexOf('IPAD') >= 0
     ) {
       bool = true;
     }
@@ -154,8 +155,8 @@ export class AdminLayoutComponent implements OnInit {
   }
   createOnline$() {
     return merge<boolean>(
-      fromEvent(window, "offline").pipe(map(() => false)),
-      fromEvent(window, "online").pipe(map(() => true)),
+      fromEvent(window, 'offline').pipe(map(() => false)),
+      fromEvent(window, 'online').pipe(map(() => true)),
       new Observable((sub: Observer<boolean>) => {
         sub.next(navigator.onLine);
         sub.complete();

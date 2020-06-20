@@ -1,10 +1,19 @@
 <div class="container">
-  <div class="row">
+  <div *ngIf="!statsLoad" class="stats-loading">
+    <mat-progress-spinner strokeWidth="2" diameter="50" color="accent" class="progressSpinner" [value]="100"
+      [mode]="'indeterminate'">
+    </mat-progress-spinner>
+  </div>
+
+  <div class="row" *ngIf="statsLoad === true">
     <div class="col-lg-5 col-md-12 col-sm-12">
+      Recent Weeks Comparison Chart
       <p-chart type="bar" [data]="data"></p-chart>
     </div>
 
     <div class="col-lg-5 col-md-12 col-sm-12">
+      Recent Months Comparison Chart
+
       <p-chart type="line" [data]="data2"></p-chart>
     </div>
 

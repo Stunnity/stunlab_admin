@@ -1,25 +1,25 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Router } from "@angular/router";
-import { environment } from "../../../environments/environment";
-import "rxjs/add/operator/map";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+import 'rxjs/add/operator/map';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class DataService {
-  constructor(private httpClient: HttpClient) { }
-  //Book SCRUD
-  //Get all Books
+  // Book SCRUD
+  // Get all Books
   private BASE_URL: string = environment.BASE_API;
+  constructor(private httpClient: HttpClient) { }
   getAllBooks(provider, page) {
     return this.httpClient.get(`${this.BASE_URL}/api/books?provid=${provider}&page=${page}`);
   }
-  //Push a book
+  // Push a book
   uploadBook(data) {
     return this.httpClient.post(`${this.BASE_URL}/api/book`, data);
   }
-  //Push Book Cover and File
+  // Push Book Cover and File
   pushBookCredents(headers, myFormData) {
     return this.httpClient.post(
       `${this.BASE_URL}/api/books/file/post`,
@@ -38,29 +38,29 @@ export class DataService {
     return this.httpClient.post(
       `${this.BASE_URL}/api/admin/update/${username}`, admin);
   }
-  //Delete Book
+  // Delete Book
   deleteBook(id) {
     return this.httpClient.delete(`${this.BASE_URL}/api/book/` + id);
   }
-  //Get book by Id
+  // Get book by Id
   getOneBook(id) {
     return this.httpClient.get(`${this.BASE_URL}/api/book/` + id);
   }
-  //Patch a book
+  // Patch a book
   updateBook(id, data) {
     return this.httpClient.put(`${this.BASE_URL}/api/book/` + id, data);
   }
 
-  //Categories
+  // Categories
   getCategories() {
     return this.httpClient.get(`${this.BASE_URL}/api/get/category`);
   }
-  //Levels
+  // Levels
   getLevels() {
     return this.httpClient.get(`${this.BASE_URL}/api/get/level`);
   }
-  //Total Statistics
-  //Number of uploaded books by Current Provider
+  // Total Statistics
+  // Number of uploaded books by Current Provider
   getProviderStats(admin: string) {
 
     return this.httpClient.get(
@@ -77,19 +77,23 @@ export class DataService {
     return this.httpClient.get(`${this.BASE_URL}/api/report`);
   }
 
-  //Push a book
+  // Push a book
   postNotification(id, data) {
     return this.httpClient.patch(
       `${this.BASE_URL}/api/report/seen/` + id,
       data
     );
   }
+  getChartData() {
+    return this.httpClient.get(`${this.BASE_URL}/api/admin/statistics/reads`
+    );
+  }
 
-  //Number of Total Downloads of Provider Type
+  // Number of Total Downloads of Provider Type
   getTotalDownloads() {
     return this.httpClient.get(`${this.BASE_URL}/api/get/downloads`);
   }
-  //Register Users
+  // Register Users
 
   availableUsername() {
     return this.httpClient.get(`${this.BASE_URL}/api/get/downloads`);
@@ -100,7 +104,7 @@ export class DataService {
 
   loginUser(user) {
     return this.httpClient.post(`${this.BASE_URL}/api/admin/login`, user, {
-      observe: "response",
+      observe: 'response',
     });
   }
 

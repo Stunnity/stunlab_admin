@@ -30,6 +30,7 @@ table {
 .icon_read {
   vertical-align: middle;
   padding-right: 8px;
+  cursor: pointer;
   color: rgb(111, 111, 111)
 }
 .icon_read:hover {
@@ -38,9 +39,7 @@ table {
 .blue-snackbar {
   background-color: #fff !important;
 }
-.card-title{
-  font-family: "Open Sans", "Helvetica Neue", sans-serif !important;
-  }
+
   
 .card-body>.row{
     .progress-spinner{

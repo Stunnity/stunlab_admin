@@ -1,27 +1,45 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { DataService } from "../services/app-data/data.service";
-import { ActivatedRoute } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DataService } from 'app/services/app-data/data.service';
 @Component({
-  selector: "app-read-book",
-  templateUrl: "./read-book.component.html",
-  styleUrls: ["./read-book.component.scss"],
+  selector: 'app-read-book',
+  templateUrl: './read-book.component.html',
+  styleUrls: ['./read-book.component.scss'],
 })
 export class ReadBookComponent implements OnInit {
   ISBN: any;
   data: any;
-  constructor(
-    private dataService: DataService,
-    private route: ActivatedRoute
-  ) { }
-  @ViewChild("pdfViewerOnDemand", { static: false }) pdfViewerOnDemand;
-  @ViewChild("pdfViewerAutoLoad", { static: false }) pdfViewerAutoLoad;
-  ngOnInit() {
-    this.ISBN = this.route.snapshot.params.id;
-    this.dataService.getOneBook(this.ISBN).subscribe((res) => {
-      this.pdfViewerAutoLoad.pdfSrc = res["bookFile"];
-      console.log(this.pdfViewerAutoLoad.pdfSrc);
-      this.pdfViewerAutoLoad.refresh();
+  bookReady: boolean;
+  validParam: boolean;
+  fileNotFound: boolean;
+  constructor(private route: ActivatedRoute, private dataService: DataService) {
+    this.bookReady = false;
+    this.route.queryParams.subscribe((params) => {
+      if (!params.ISBN) {
+        this.validParam = false;
+        this.bookReady = true;
+        return;
+      }
+      this.validParam = true;
+      const ISBN = params.ISBN;
+      this.getBook(ISBN);
+    });
 
+
+  }
+  ngOnInit() {
+  }
+
+  getBook(ISBN: string) {
+    this.dataService.getOneBook(ISBN).subscribe((res: any) => {
+      console.log(res);
+      this.bookReady = true;
+      window.open(res.bookFile, '_self');
+      this.fileNotFound = false;
+    }, (err: HttpErrorResponse) => {
+      this.bookReady = true;
+      this.fileNotFound = true;
     });
   }
 }

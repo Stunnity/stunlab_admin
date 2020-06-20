@@ -1,13 +1,13 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import {
   Router,
-} from "@angular/router";
-import { SharedDataService } from "./services/shared-data/shared-data.service";
+} from '@angular/router';
+import { SharedDataService } from './services/shared-data/shared-data.service';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
 
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   ) {
   }
   ngOnInit() {
-    this.loginStatus = this.sharedDataService.loggedIn();
-    if (!this.loginStatus) this._router.navigate(["/login"]);
+    // this.loginStatus = this.sharedDataService.loggedIn();
+    // if (!this.loginStatus) { this._router.navigate(['/login']); }
   }
 }

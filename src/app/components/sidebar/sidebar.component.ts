@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { DataService } from "app/services/app-data/data.service";
-import { Router } from "@angular/router";
-import { SharedDataService } from "app/services/shared-data/shared-data.service";
+import { Component, OnInit } from '@angular/core';
+import { DataService } from 'app/services/app-data/data.service';
+import { Router } from '@angular/router';
+import { SharedDataService } from 'app/services/shared-data/shared-data.service';
 
 declare const $: any;
 
@@ -13,18 +13,18 @@ declare interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-  { path: "/dashboard", title: "Dashboard", icon: "dashboard", class: "" },
-  { path: "/push-book", title: "Push Book", icon: "present_to_all", class: "" },
-  { path: "/edit-book", title: "Edit Book", icon: "mode_edit", class: "disabled-link" },
-  { path: "/manage-books", title: "Manage Books", icon: "chrome_reader_mode", class: "" },
-  { path: "/statistics", title: "Statistics", icon: "assessment", class: "" },
-  { path: "/profile", title: "Profile", icon: "person", class: "" },
+  { path: '/dashboard', title: 'Dashboard', icon: 'dashboard', class: '' },
+  { path: '/push-book', title: 'Push Book', icon: 'present_to_all', class: '' },
+  { path: '/edit-book', title: 'Edit Book', icon: 'mode_edit', class: 'disabled-link' },
+  { path: '/manage-books', title: 'Manage Books', icon: 'chrome_reader_mode', class: '' },
+  { path: '/statistics', title: 'Statistics', icon: 'assessment', class: '' },
+  { path: '/profile', title: 'Profile', icon: 'person', class: '' },
 ];
 
 @Component({
-  selector: "app-sidebar",
-  templateUrl: "./sidebar.component.html",
-  styleUrls: ["./sidebar.component.css"],
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.css'],
 })
 
 export class SidebarComponent implements OnInit {
@@ -32,7 +32,7 @@ export class SidebarComponent implements OnInit {
   notifications: any;
   displayNotifications: boolean;
   count: any;
-  data = "Seen";
+  data = 'Seen';
   location: Location;
   search: String;
   active_user: any;
@@ -52,7 +52,7 @@ export class SidebarComponent implements OnInit {
 
   getCurrentUser() {
     this.sharedData.getLoggedUser().subscribe(user => {
-      this.active_user = user["provider_providerName"];
+      this.active_user = user['provider_providerName'];
     });
   }
   isMobileMenu() {
@@ -65,7 +65,7 @@ export class SidebarComponent implements OnInit {
     this.dataService.getUnSeenNotification().subscribe((notifications) => {
       this.notifications = notifications;
       this.count = this.notifications.length;
-      if (this.count > 0) this.displayNotifications = true;
+      if (this.count > 0) { this.displayNotifications = true; }
     });
   }
 

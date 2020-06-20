@@ -7,18 +7,18 @@ export function setPassword(password) {
 }
 
 export function scorePassword(password): number {
-  var score = 0;
-  if (!password) return score;
+  let score = 0;
+  if (!password) { return score; }
 
   // award every unique letter until 5 repetitions
-  var letters = new Object();
-  for (var i = 0; i < password.length; i++) {
+  const letters = new Object();
+  for (let i = 0; i < password.length; i++) {
     letters[password[i]] = (letters[password[i]] || 0) + 1;
     score += 5.0 / letters[password[i]];
   }
 
   // bonus points for mixing it up
-  var variations = {
+  const variations = {
     digits: /\d/.test(password),
     lower: /[a-z]/.test(password),
     upper: /[A-Z]/.test(password),
@@ -26,8 +26,11 @@ export function scorePassword(password): number {
   };
 
   let variationCount = 0;
-  for (var check in variations) {
-    variationCount += variations[check] == true ? 1 : 0;
+
+  for (const check in variations) {
+    if (check !== undefined) {
+      variationCount += variations[check] === true ? 1 : 0;
+    }
   }
   score += (variationCount - 1) * 10;
 
