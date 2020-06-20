@@ -40,7 +40,7 @@ export class RegistrationComponent implements OnInit {
       c_password: new FormControl('', [Validators.required]),
       description: new FormControl('', [
         Validators.required,
-        Validators.minLength(200),
+        Validators.minLength(15),
       ]),
     });
     this.formGroup.setValidators(checkPasswords);
@@ -48,13 +48,6 @@ export class RegistrationComponent implements OnInit {
 
   ngOnInit() {
     this.btn_text = 'create account';
-    setInterval(() => {
-      console.log(this.formGroup)
-      console.log(this.formGroup.controls.c_password)
-      console.log(this.formGroup.hasError('unmatch'))
-      console.log(this.formGroup.get('c_password').dirty)
-    }, 10000)
-
   }
   signUp() {
     this.isLoading = true;
